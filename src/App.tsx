@@ -211,7 +211,7 @@ export default function App() {
         <button className={`nav-item ${view === 'connection' ? 'active' : ''}`} onClick={() => setView('connection')} aria-current={view === 'connection' ? 'page' : undefined}><Icon name="link" /><span>Conexión</span></button>
       </nav>
       <div className="sidebar-note"><div className="sidebar-note-art" aria-hidden="true"><span>↗</span><i /><i /></div><strong>Mejor, juntos.</strong><p>Cada persona es una nueva oportunidad para conectar.</p></div>
-      <div className="sidebar-footer"><span className="team-avatar">ME</span><div><strong>Mi espacio</strong><small>Directorio del equipo</small></div><span className="footer-dot" /></div>
+      <div className="sidebar-footer"><span className="team-avatar">Fcc</span><div><strong>Fredy CC</strong><small>Directorio del equipo</small></div><span className="footer-dot" /></div>
     </aside>
     <div className="main-shell">
       <header className="topbar"><div className="breadcrumb"><span>Espacio de trabajo</span><Icon name="chevron" size={14} /><strong>{view === 'directory' ? 'Personas' : 'Conexión'}</strong></div><div className="topbar-status"><span className={`status-dot ${isDemo || loaded ? '' : 'offline'}`} /><span>{isDemo ? 'Modo demostración' : loading ? 'Consultando API…' : loaded ? 'API conectada' : 'Conexión pendiente'}</span></div></header>
