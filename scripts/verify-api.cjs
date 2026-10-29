@@ -16,7 +16,7 @@ function adapter(mode, base = 'https://api.example.test', fetchImpl, protocol = 
   const memory = new Map();
   const context = {
     exports, AbortController, performance, URL,
-    window: { location: { protocol }, setTimeout, clearTimeout },
+    window: { location: { protocol, origin: `${protocol}//web.example.test` }, setTimeout, clearTimeout },
     localStorage: { getItem: key => memory.get(key) ?? null, setItem: (key, value) => memory.set(key, value) },
     fetch: fetchImpl || (() => { throw new Error('A demo request must not hit the network'); }),
   };
@@ -43,6 +43,13 @@ async function test(name, operation) { await operation(); count++; console.log('
     const result = await api.getUsers();
     assert.equal(result.data[0].name, 'Ana');
     assert.equal(result.info.cache, 'HIT');
+  });
+  await test('Base /api usa la ruta del mismo origen para el proxy de Nginx', async () => {
+    const api = adapter('api', '/api', async url => {
+      assert.equal(url, '/api/users');
+      return new Response('[]');
+    });
+    assert.equal((await api.getUsers()).data.length, 0);
   });
   await test('POST envía un objeto JSON y acepta HTTP 201', async () => {
     const api = adapter('api', 'https://api.example.test', async (url, options) => {

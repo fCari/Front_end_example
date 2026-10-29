@@ -1,0 +1,9 @@
+node_modules
+dist
+.git
+.github
+.kilo
+.env
+.env.*
+keys.txt
+README.md

@@ -1,0 +1,17 @@
+services:
+  web:
+    build:
+      context: .
+      args:
+        VITE_DATA_SOURCE: ${VITE_DATA_SOURCE:-api}
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-/api}
+    image: ${WEB_IMAGE:-fredy/users-web:v1}
+    ports:
+      - "${WEB_PORT:-8080}:80"
+    restart: unless-stopped
+    networks:
+      - laboratorio_net
+
+networks:
+  laboratorio_net:
+    name: laboratorio_net

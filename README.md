@@ -36,6 +36,10 @@ VITE_API_BASE_URL=https://api.lab.tu-dominio.com
 
 La URL es la del balanceador o del servidor que atiende FastAPI. No añadas `/users` al final. Si tu API tiene un prefijo, puedes usar por ejemplo `https://api.lab.tu-dominio.com/api`; el frontend añadirá `/users` y `/health` a ese prefijo.
 
+### Frontend y backend en Docker Compose
+
+Si el navegador accede al frontend servido por el contenedor `web`, configura `VITE_API_BASE_URL=/api`. El navegador llamará al mismo origen del frontend y Nginx reenviará esas solicitudes a `http://backend:8000` dentro de la red Docker. El nombre `backend` solo se resuelve dentro de Docker, no desde el navegador del usuario. En este proyecto, Compose compila el frontend con `/api` por defecto; si cambias la variable, vuelve a compilar y recrea el contenedor `web`.
+
 Reinicia Vite después de cambiar `.env`. Para un despliegue, vuelve a compilar. Las variables `VITE_` se incorporan al JavaScript público durante el build: no son secretos.
 
 El modo API nunca cambia automáticamente a datos ficticios ante un fallo. Un error de red se muestra como tal. El proyecto no implementa autenticación; si tu API requiere credenciales, adapta `src/api.ts` al mecanismo real antes de usarla.

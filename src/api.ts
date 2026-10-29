@@ -61,8 +61,15 @@ function endpoint(path: string): string {
   if (source !== 'api') throw new ApiError('VITE_DATA_SOURCE debe ser demo o api.');
   if (!rawBase) throw new ApiError('Falta configurar VITE_API_BASE_URL. Consulta el README.');
   let url: URL;
-  try { url = new URL(rawBase); } catch { throw new ApiError('La URL de la API no es válida.'); }
-  if (!['https:', 'http:'].includes(url.protocol) || url.search || url.hash || url.username || url.password) {
+  const isSameOriginPath = rawBase.startsWith('/') && !rawBase.startsWith('//');
+  try {
+    url = isSameOriginPath
+      ? new URL(rawBase, window.location.origin)
+      : new URL(rawBase);
+  } catch { throw new ApiError('La URL de la API no es válida.'); }
+  if (!['https:', 'http:'].includes(url.protocol)
+    || url.search || url.hash || url.username || url.password
+    || (isSameOriginPath && url.origin !== window.location.origin)) {
     throw new ApiError('Usa una URL HTTP o HTTPS sin credenciales, parámetros ni fragmentos.');
   }
   if (window.location.protocol === 'https:' && url.protocol === 'http:') {
